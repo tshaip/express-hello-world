@@ -8,6 +8,8 @@ app.use(express.static("Public"));
 
 app.get("/", (req, res) => res.sendFile(__dirname + '/Public/homepage.html'));
 
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
@@ -32,4 +34,3 @@ app.post('/Create-Room', (req, res) => {
   });
 });
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
