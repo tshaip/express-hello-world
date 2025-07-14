@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+.category {
+    display : flex;
+    gap : 20 px;
+}
