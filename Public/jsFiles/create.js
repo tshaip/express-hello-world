@@ -44,7 +44,7 @@ function createRoom() {
 
     console.log("Room data to be sent:", jsonData);
 
-    fetch('/rooms/room-data', {
+    fetch('/rooms/room-data' + roomName, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(jsonData)
