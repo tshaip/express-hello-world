@@ -21,7 +21,7 @@ function addCategory (){
 
 function createRoom() {
     const roomName = document.getElementById("roomName").value;
-    fetch('/room-data/' + roomName,)
+    fetch('/rooms/room-data/' + roomName,)
     .then(response => {
       if (response.ok) {
         const lbl = document.getElementById('FehlerRaumName');
@@ -44,7 +44,7 @@ function createRoom() {
 
     console.log("Room data to be sent:", jsonData);
 
-    fetch('/rooms/room-data' + roomName, {
+    fetch('/rooms/room-data/' + roomName, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(jsonData)
