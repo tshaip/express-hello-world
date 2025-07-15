@@ -26,11 +26,12 @@ function createRoom() {
       if (response.ok) {
         const lbl = document.getElementById('FehlerRaumName');
         lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
-        return;
+        throw new Error(`Room '${roomName}' already exists.`);
       }
-
-      const lbl = document.getElementById('FehlerRaumName');
-      lbl.textContent = `Name available.`;
+    })
+    .then(() => {
+    const lbl = document.getElementById('FehlerRaumName');
+    lbl.textContent = `Name available.`;
     
     const categories = Array.from(document.querySelectorAll('input[name="category"]'));
     const categoryValues = categories.map(input => input.value).filter(value => value.trim() !== '');
@@ -44,15 +45,16 @@ function createRoom() {
 
     console.log("Room data to be sent:", jsonData);
 
-    fetch('/room-data/' + roomName, {
+    return fetch('/room-data/' + roomName, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(jsonData)
-      })
-      .then(res => res.text())
-      .then(msg => console.log('Response from server: ' + msg))
-      .catch(err => console.error('Error:', err));
+      });
     })
+    .then(res => res.text())
+    .then(msg => console.log('Response from server: ' + msg))
+    .catch(err => console.error('Error:', err));
+    
 
 
 }
