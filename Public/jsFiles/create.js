@@ -29,7 +29,7 @@ function createRoom() {
         throw new Error(`Room '${roomName}' already exists.`);
       }
     })
-    .then(() => {
+    /*.then(() => {
     const lbl = document.getElementById('FehlerRaumName');
     lbl.textContent = `Name available.`;
     
@@ -53,8 +53,5 @@ function createRoom() {
     })
     .then(res => res.text())
     .then(msg => console.log('Response from server: ' + msg))
-    .catch(err => console.error('Error:', err));
-    
-
-
+    .catch(err => console.error('Error:', err));*/
 }
