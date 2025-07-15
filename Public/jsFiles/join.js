@@ -1,28 +1,25 @@
 function tryName () {
-
-    const inputs = document.querySelectorAll('input[name="category"]');
-    const categorys = [];
-
-    inputs.forEach(input => {
-      const wert = input.value.trim();
-      if (wert !== '') {
-        categorys.push(wert);
+  const roomName = document.getElementById("roomCode").value
+  fetch(`/data/${roomName}/${roomName}.json`)
+    .then(response => {
+      if (!response.ok){
+        const div = document.getElementById('FehlerRaumName');
+        div.text = `Raum mit dem Namen '${roomName}' ist nicht vorhanden.`;
       }
-    });
-
-    const Room = {
-        name : document.getElementById("roomName").value,
-        password_value : document.getElementsById("Privat").checked,
-        password : document.getElementById("password").value,
-        categorys : categorys,
-        players : {},
-    }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Geladene Daten: ", data)
+    })
+    .catch(error => {
+      console.error("Fehler beim Laden oder Parsen der Datei:", error.message);
+    })
  
     const jsonData = JSON.stringify(Room, null, 2);
     console.log("Daten als JSON:", jsonData);
 
     // An den Server senden
-    fetch('/Create-room', {
+    fetch('/Join-room', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: jsonData
