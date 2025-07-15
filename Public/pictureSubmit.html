@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Picture Submit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Submit a Picture</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="picture"></label>
+        <input type="file" id="picture" name="picture" accept="image/*" required>
+        <button type="submit">Next</button>
+    </form>
+    <script src="./jsFiles/pictureSubmit.js"></script>
+</body>
+</html>

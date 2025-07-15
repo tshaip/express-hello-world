@@ -38,8 +38,11 @@ function createRoom() {
     const jsonData = {
         name: roomName,
         private: document.getElementById("Privat").checked,
-        categories: categoryValues
+        categories: categoryValues,
+        players: []
     }
+
+    console.log("Room data to be sent:", jsonData);
 
     fetch('/rooms/room-data', {
         method: 'POST',
