@@ -8,6 +8,7 @@ function joinRoom () {
         if (!response.ok) {
             const lbl = document.getElementById('FehlerRaumName');
             lbl.textContent = `Room with the name '${roomName}' does not exist. Please check the code.`;
+            console.log(`Error: Room with name '${roomName}' not found.`);
             return;
         }
         return response.json();
@@ -18,7 +19,11 @@ function joinRoom () {
         lbl.textContent = `Username is not available. Please choose a different username.`;
         return;
       }
-      jsonData.players.push(document.getElementById("username").value);
+
+      console.log("Room data retrieved:", jsonData);
+
+      localStorage.setItem("playerName", username);
+      jsonData.players.push(username);
       fetch('/rooms/room-data/' + roomName, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
