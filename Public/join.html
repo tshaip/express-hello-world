@@ -7,8 +7,9 @@
     <title>Join Page</title>
 </head>
 <body>
-    <label for="roomCode">Enter Room Code:</label>
-    <input type="text" id="roomCode" placeholder="Room Code">
+    <label for="roomName">Enter Room Code:</label>
+    <input type="text" id="roomName" placeholder="Room Code">
+    <label id="FehlerRaumName"></label>
     
     <label for="password">Enter Password (Optional):</label>
     <input type="password" id="password" placeholder="Password">
@@ -16,7 +17,7 @@
     <label for="username">Enter Username:</label>
     <input type="text" id="username" placeholder="Username">
     
-    <button id="join" onclick="">Join Room</button>
+    <button id="join" onclick="joinRoom()">Join Room</button>
 
     <script src="./jsFiles/join.js"></script>
 </body>

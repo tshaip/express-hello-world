@@ -1,30 +1,39 @@
-function tryName () {
-  const roomName = document.getElementById("roomCode").value
-  fetch(`/data/${roomName}/${roomName}.json`)
+function joinRoom () {
+    const roomName = document.getElementById("roomName").value;
+    const username = document.getElementById("username").value;
+
+
+    fetch('/room-data/' + roomName)
     .then(response => {
-      if (!response.ok){
-        const div = document.getElementById('FehlerRaumName');
-        div.text = `Raum mit dem Namen '${roomName}' ist nicht vorhanden.`;
-      }
-      return response.json();
+        if (!response.ok) {
+            const lbl = document.getElementById('FehlerRaumName');
+            lbl.textContent = `Room with the name '${roomName}' does not exist. Please check the code.`;
+            return;
+        }
+        return response.json();
     })
-    .then(data => {
-      console.log("Geladene Daten: ", data)
+    .then(jsonData => {
+      if (jsonData.players.includes(username)) {
+        const lbl = document.getElementById('FehlerSpielerName');
+        lbl.textContent = `Username is not available. Please choose a different username.`;
+        return;
+      }
+      jsonData.players.push(document.getElementById("username").value);
+      fetch('/rooms/room-data/' + roomName, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jsonData)
+      }) 
+      .then(res => res.text())
+      .then(msg => {
+        console.log('Serverantwort:', msg);})
+      .catch(err => console.error('Fehler:', err));
+
+      localStorage.setItem("categories", JSON.stringify(jsonData.categories));
     })
     .catch(error => {
-      console.error("Fehler beim Laden oder Parsen der Datei:", error.message);
-    })
- 
-    const jsonData = JSON.stringify(Room, null, 2);
-    console.log("Daten als JSON:", jsonData);
+    console.error('Fehler beim Abrufen des Raums:', error.message);
+    });
 
-    // An den Server senden
-    fetch('/Join-room', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: jsonData
-    })
-    .then(res => res.text())
-    .then(msg => alert('Antwort vom Server: ' + msg))
-    .catch(err => console.error('Fehler:', err));
+    window.location.href = "./pictureSubmit.html";
 }
