@@ -1,6 +1,11 @@
-let categoryCount = 0;
+let categoryCount = 1;
 
 function addCategory (){
+
+    if (categoryCount > 10) {
+        console.log("Maximum number of categories reached.");
+        return;
+    }
     const container = document.getElementById("categorys");
     const div = document.createElement("div");
 
@@ -18,10 +23,31 @@ function createRoom() {
     const roomName = document.getElementById("roomName").value;
     fetch('/room-data/' + roomName,)
     .then(response => {
-      if (!response.ok) {
+      if (response.ok) {
         const lbl = document.getElementById('FehlerRaumName');
         lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
         return;
       }
+
+      const lbl = document.getElementById('FehlerRaumName');
+      lbl.textContent = `Name available.`;
+    
+    const categories = Array.from(document.querySelectorAll('input[name="category"]'));
+    const categoryValues = categories.map(input => input.value).filter(value => value.trim() !== '');
+
+    const jsonDate = {
+        name: roomName,
+        private: document.getElementById("Privat").checked,
+        categories: categoryValues
+    }
+
+    fetch('/rooms/room-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(jsonData)
+      })
+      .then(res => res.text())
+      .then(msg => console.log('Response from server: ' + msg))
+      .catch(err => console.error('Error:', err));
     })
 }
