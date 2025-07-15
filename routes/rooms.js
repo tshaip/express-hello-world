@@ -5,7 +5,7 @@ const path = require('path');
 
 router.post('/room-data/:name', (req, res) => {
     const roomData = req.body;
-    const filePath = path.join(__dirname, 'data', `${roomData.name}.json`);
+    const filePath = path.join('../data', `${roomData.name}.json`);
 
     fs.writeFile(filePath, JSON.stringify(roomData, null, 2), (err) => {
         if (err) {
@@ -18,7 +18,7 @@ router.post('/room-data/:name', (req, res) => {
 
 router.get('/room-data/:name', (req, res) => {
     const name = req.params.name;
-    const filePath = path.join(__dirname, 'data', `${name}.json`);
+    const filePath = path.join('../data', `${name}.json`);
 
     fs.readFile(filePath, 'utf8', (err, json) => {
         if (err) {
