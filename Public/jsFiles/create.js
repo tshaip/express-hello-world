@@ -35,7 +35,7 @@ function createRoom() {
     const categories = Array.from(document.querySelectorAll('input[name="category"]'));
     const categoryValues = categories.map(input => input.value).filter(value => value.trim() !== '');
 
-    const jsonDate = {
+    const jsonData = {
         name: roomName,
         private: document.getElementById("Privat").checked,
         categories: categoryValues
@@ -50,4 +50,6 @@ function createRoom() {
       .then(msg => console.log('Response from server: ' + msg))
       .catch(err => console.error('Error:', err));
     })
+
+
 }
