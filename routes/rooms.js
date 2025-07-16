@@ -18,7 +18,7 @@ router.post('/room-data/:name', (req, res) => {
 
 router.get('/room-data/:name', (req, res) => {
     const name = req.params.name;
-    const filePath = path.join(__dirname, '..' , 'data', `${name}.json`);
+    const filePath = path.join(__dirname, `${name}.json`);
 
     if (!fs.existsSync(filePath)) {
         console.log(`Room with name '${name}' does not exist.`);
