@@ -29,6 +29,8 @@ function createRoom() {
         throw new Error(`Room '${roomName}' already exists.`);
       }
     })
+    .catch(error => {
+      console.error('Error checking room existence:', error.message);})
     /*.then(() => {
     const lbl = document.getElementById('FehlerRaumName');
     lbl.textContent = `Name available.`;
