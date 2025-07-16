@@ -20,15 +20,16 @@ router.get('/room-data/:name', (req, res) => {
     const name = req.params.name;
     const filePath = path.join(__dirname, '..' , 'data', `${name}.json`);
 
+    if (!fs.existsSync(filePath)) {
+        console.log(`Room with name '${name}' does not exist.`);
+        return res.status(404).send('Room not found.');
+    }   else 
+    {
     fs.readFile(filePath, 'utf8', (err, json) => {
-        if (err) {
-            console.log(`Error reading file ${filePath}:`, err.message);
-            return res.status(404).send('Room not found');
-        }
-
         res.setHeader('Content-Type', 'application/json');
         res.send(json);
-    });
+        return res.status(200).send('Room found.');
+    });}
 });
 
 module.exports = router;

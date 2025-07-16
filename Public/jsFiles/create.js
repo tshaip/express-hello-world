@@ -20,40 +20,48 @@ function addCategory (){
 }
 
 function createRoom() {
+    const Fehler = true;
     const roomName = document.getElementById("roomName").value;
     fetch('/room-data/' + roomName,)
     .then(response => {
-      if (response.ok) {
-        const lbl = document.getElementById('FehlerRaumName');
-        lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
-        throw new Error(`Room '${roomName}' already exists.`);
-      }
+        if (response.status === 404) {
+            Fehler = false;
+            const lbl = document.getElementById('FehlerRaumName');
+            lbl.textContent = `Name of the room is available.`;
+        } else if (response.status === 200) {  
+            Fehler = true;
+            const lbl = document.getElementById('FehlerRaumName');
+            lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
+        } 
     })
-    .catch(error => {
-      console.error('Error checking room existence:', error.message);})
-    /*.then(() => {
-    const lbl = document.getElementById('FehlerRaumName');
-    lbl.textContent = `Name available.`;
-    
-    const categories = Array.from(document.querySelectorAll('input[name="category"]'));
-    const categoryValues = categories.map(input => input.value).filter(value => value.trim() !== '');
+   
+    if (!Fehler) {
+        const categories = [];
+        const categoryInputs = document.querySelectorAll('input[name="category"]');
+        categoryInputs.forEach(input => {
+            if (input.value.trim() !== "") {
+                categories.push(input.value.trim());
+            }
+        });
 
-    const jsonData = {
-        name: roomName,
-        private: document.getElementById("Privat").checked,
-        categories: categoryValues,
-        players: []
+        if (categories.length === 0) {
+            console.log("No categories provided.");
+            return;
+        }
+
+        const roomData = {
+            name: roomName,
+            players: [],
+            categories: categories
+        };
+
+        fetch('/room-data/' + roomName, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(roomData)
+        })
+        .then(res => res.text())
+        .then(msg => console.log('Response from server: ' + msg))
+        .catch(err => console.error('Error:', err));
     }
-
-    console.log("Room data to be sent:", jsonData);
-
-    return fetch('/room-data/' + roomName, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(jsonData)
-      });
-    })
-    .then(res => res.text())
-    .then(msg => console.log('Response from server: ' + msg))
-    .catch(err => console.error('Error:', err));*/
 }
