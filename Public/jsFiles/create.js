@@ -22,18 +22,17 @@ function addCategory (){
 function createRoom() {
     const Fehler = true;
     const roomName = document.getElementById("roomName").value;
-    fetch('/room-data/' + roomName,)
-    .then(response => {
+    const lbl = document.getElementById('FehlerRaumName');
+
+    const response = await fetch('/room-data/' + roomName,);
         if (response.status === 404) {
             Fehler = false;
-            const lbl = document.getElementById('FehlerRaumName');
+            console.log(`Room with name '${roomName}' does not exist.`);
             lbl.textContent = `Name of the room is available.`;
         } else if (response.status === 200) {  
             Fehler = true;
-            const lbl = document.getElementById('FehlerRaumName');
             lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
-        } 
-    })
+        };
    
     if (!Fehler) {
         const categories = [];
