@@ -25,10 +25,19 @@ router.get('/room-data/:name', (req, res) => {
         return res.status(404).send('Room not found.');
     }   else 
     {
-    fs.readFile(filePath, 'utf8', (err, json) => {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(json);
-        return res.status(200).send('Room found.');
+    fs.readFile(filePath, 'utf8', (err, jsonString) => {
+        if (err) {
+        console.error("Fehler beim Lesen der Datei:", err);
+        return res.status(500).send("Datei konnte nicht gelesen werden.");
+    }
+
+    try {
+        const json = JSON.parse(jsonString);
+        res.json(json);
+         } catch (parseErr) {
+        console.error("Fehler beim Parsen des JSON:", parseErr);
+        res.status(500).send("Ungültiges JSON-Format in der Datei.");
+    }
     });}
 });
 
