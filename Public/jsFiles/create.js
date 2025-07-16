@@ -19,22 +19,22 @@ function addCategory (){
     categoryCount++;
 }
 
-function createRoom() {
-    const Fehler = true;
+async function createRoom() {
+    let Fehler = true;
     const roomName = document.getElementById("roomName").value;
     const lbl = document.getElementById('FehlerRaumName');
 
     const response = await fetch('/room-data/' + roomName,);
         if (response.status === 404) {
-            Fehler = false;
             console.log(`Room with name '${roomName}' does not exist.`);
             lbl.textContent = `Name of the room is available.`;
         } else if (response.status === 200) {  
-            Fehler = true;
             lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
-        };
+            return;
+        } else {
+          return;
+        }
    
-    if (!Fehler) {
         const categories = [];
         const categoryInputs = document.querySelectorAll('input[name="category"]');
         categoryInputs.forEach(input => {
@@ -62,5 +62,4 @@ function createRoom() {
         .then(res => res.text())
         .then(msg => console.log('Response from server: ' + msg))
         .catch(err => console.error('Error:', err));
-    }
 }
