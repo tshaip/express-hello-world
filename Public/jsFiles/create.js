@@ -20,7 +20,6 @@ function addCategory (){
 }
 
 async function createRoom() {
-    let Fehler = true;
     const roomName = document.getElementById("roomName").value;
     const lbl = document.getElementById('FehlerRaumName');
 
@@ -62,4 +61,6 @@ async function createRoom() {
         .then(res => res.text())
         .then(msg => console.log('Response from server: ' + msg))
         .catch(err => console.error('Error:', err));
+
+        window.location.href = "./Lobby.html";
 }
