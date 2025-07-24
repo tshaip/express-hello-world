@@ -8,9 +8,9 @@
 <body>
     <h1>Submit a Picture</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <label for="picture"></label>
+        <label for="picture" id="categorie"></label>
         <input type="file" id="picture" name="picture" accept="image/*" required>
-        <button type="submit">Next</button>
+        <button type="submit" onclick="uploadPicture()">Submit</button>
     </form>
     <script src="./jsFiles/pictureSubmit.js"></script>
 </body>

@@ -1,46 +1,40 @@
 async function joinRoom () {
-    const roomName = document.getElementById("roomName").value;
-    const username = document.getElementById("username").value;
-    const lbl = document.getElementById('FehlerRaumName');
+    const roomID = document.getElementById("roomID").value;
+    const FehlerRaumID = document.getElementById("FehlerRaumID");
 
-     if (!roomName || !username) {
-        lbl.textContent = "Please enter both room name and username.";
-        return;
+    const response = await fetch(`/room/room-check/${roomID}`);
+    try {
+            if (response.status === 404) {
+                FehlerRaumID.textContent = "Room not found";
+                throw new Error('Room not found');
+            }
+
+            if (response.ok) {
+                FehlerRaumID.textContent = "";
+                const playerResponse = await fetch(`/player/player-data`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        roomID: roomID,
+                        playerName: document.getElementById("playerName").value
+                     })
+                })
+
+                const roomData = await playerResponse.json();
+                
+                // Here you can handle the successful room join, e.g., redirecting to the game page
+                window.location.href = `./picktureSubmit.html?roomID=${roomData.roomID}&playerID=${roomData.playerID}`;
+            } else {
+                FehlerRaumID.textContent = "Failed to join room";
+                throw new Error('Failed to join room');
+        }
     }
+    catch (err) {
+            console.error('Error:', err);
+            alert('Failed to join room: ' + err.message);
+        };
 
-    const response = await fetch('/room-data/' + roomName,);
-        if (response.status === 404) {
-            console.log(`Room with name '${roomName}' does not exist.`);
-            lbl.textContent = `Name of the room is available.`;
-            return;
-        } else if (response.status === 200) {  
-            lbl.textContent = `Room exists.`;
-        } else {
-          return;
-        }
     
-    const data = await response.json();
-    
-        if (data.players.includes(username)) {
-            lbl.textContent = `Username '${username}' is already taken in this room. Please choose a different username.`;
-            return;
-        }
-
-        data.players.push(username);
-
-        fetch('/room-data/' + roomName, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.text())
-        .then(text => {
-            console.log("Room joined successfully:", text);
-            lbl.textContent = `Successfully joined the room as '${username}'.`;
-            window.location.href = './pictureSubmit.html';
-        })
-        .catch(error => {
-            console.error("Error joining room:", error);
-            lbl.textContent = "Error joining the room. Please try again.";
-        });
 }

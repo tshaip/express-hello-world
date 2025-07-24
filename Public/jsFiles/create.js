@@ -23,17 +23,11 @@ async function createRoom() {
     const roomName = document.getElementById("roomName").value;
     const lbl = document.getElementById('FehlerRaumName');
 
-    const response = await fetch('/room-data/' + roomName,);
-        if (response.status === 404) {
-            console.log(`Room with name '${roomName}' does not exist.`);
-            lbl.textContent = `Name of the room is available.`;
-        } else if (response.status === 200) {  
-            lbl.textContent = `Room with the name '${roomName}' already exists. Please choose a different name.`;
-            return;
-        } else {
-          return;
-        }
-   
+    if (!roomName) {
+        lbl.textContent = "Please enter a room name.";
+        return;
+    }
+
         const categories = [];
         const categoryInputs = document.querySelectorAll('input[name="category"]');
         categoryInputs.forEach(input => {
@@ -49,11 +43,10 @@ async function createRoom() {
 
         const roomData = {
             name: roomName,
-            players: [],
             categories: categories
         };
 
-        fetch('/room-data/' + roomName, {
+        fetch('/room/room-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(roomData)
