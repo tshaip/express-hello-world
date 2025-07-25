@@ -34,6 +34,10 @@ async function joinRoom () {
     catch (err) {
             console.error('Error:', err);
             alert('Failed to join room: ' + err.message);
+
+
+
+            
         };
 
     

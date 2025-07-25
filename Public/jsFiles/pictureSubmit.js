@@ -28,5 +28,10 @@ async function uploadPicture() {
     });
 
     i++;
+
+    if (i === categories.length) {
+        window.location.href = './lobby.html';
+    }
+
     lbl.textContent = categories[i].name;     
 }
